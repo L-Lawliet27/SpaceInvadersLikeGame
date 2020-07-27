@@ -83,8 +83,8 @@ public class AlienShip extends EnemyShip {
 
             firstShipCheck();
             downCheck();
-            setGoToEasy();
-            setGoToHard();
+//            setGoToEasy();
+//            setGoToHard();
 
             if (getDir()) {
                 initCord[0]--;
