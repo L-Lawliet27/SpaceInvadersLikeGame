@@ -4,6 +4,7 @@ import Game.Game;
 import GameElements.GameElement;
 import GameElements.Ships.UCMShip;
 import Utils.FileContentsVerifier;
+import Game.Level;
 
 public class AlienShip extends EnemyShip {
 
@@ -15,6 +16,8 @@ public class AlienShip extends EnemyShip {
     protected static int counter;
     protected static boolean isFirst = true;
     protected static int elemCounter = 0;
+    protected static boolean goToEasy = false;
+    protected static boolean goToHard = false;
 
     public AlienShip(Game game, int dimX, int dimY, int lives, int pointValue) {
         super(game, dimX, dimY, lives, pointValue);
@@ -78,19 +81,10 @@ public class AlienShip extends EnemyShip {
     public void move() {
         if(game.movingCycles() == 0) {
 
-            if(elemCounter == getNumForces()){
-                elemCounter = 0;
-                isFirst = true;
-            }
-
-            if(down){
-                initCord[1]++;
-                counter++;
-                if(counter == getNumForces()){
-                    down = false;
-                    counter = 0;
-                }
-            }
+            firstShipCheck();
+            downCheck();
+            setGoToEasy();
+            setGoToHard();
 
             if (getDir()) {
                 initCord[0]--;
@@ -119,27 +113,89 @@ public class AlienShip extends EnemyShip {
                     initCord[0]--;
 //                    rightToLeft = true;
 //                    down = true;
-                } else if(!game.isOnBoard(initCord[0] + 4, initCord[1]) && isFirst){
-                    initCord[0]--;
-                    initCord[1]++;
-                    initCord[0]--;
-                    rightToLeft = true;
-                    down = true;
+                } else if(game.getLevel() == Level.EASY || goToEasy){
+
+                    if(!game.isOnBoard(initCord[0] + (getNumForces() - 2), initCord[1]) && isFirst){
+                        downSet();
+                    }
+                } else if (game.getLevel() == Level.HARD || goToHard){
+
+                    if(getNumForces() <= 8 && getNumForces() > 6){
+                        if(!game.isOnBoard(initCord[0] + (getNumForces() - 4), initCord[1]) && isFirst){
+                            downSet();
+                        }
+                    } else if(!game.isOnBoard(initCord[0] + (getNumForces() - 8), initCord[1]) && isFirst){
+                        downSet();
+                    }
+                } else if (game.getLevel() == Level.INSANE){
+
+                    if(!game.isOnBoard(initCord[0] + (getNumForces() - 12), initCord[1]) && isFirst){
+                        downSet();
+                    }
                 }
 
             }
             elemCounter++;
 
-            if(isFirst){
-                isFirst = false;
-            }
+            setIsFirst();
+            setLanded();
+        }
+    }
 
 
-            if (initCord[1] == Game.DIM_Y - 1) {
-                landed = true;
-                game.getWinnerMessage();
+    private void firstShipCheck(){
+        if(elemCounter == getNumForces()){
+            elemCounter = 0;
+            isFirst = true;
+        }
+    }
+
+    private void setIsFirst(){
+        if(isFirst){
+            isFirst = false;
+        }
+    }
+
+    private void downCheck(){
+        if(down){
+            initCord[1]++;
+            counter++;
+            if(counter == getNumForces()){
+                down = false;
+                counter = 0;
             }
         }
+    }
+
+    private void setLanded(){
+        if (initCord[1] == Game.DIM_Y - 1) {
+            landed = true;
+            game.getWinnerMessage();
+        }
+    }
+
+    private void setGoToEasy(){
+        if(game.getLevel() == Level.HARD || game.getLevel() == Level.INSANE){
+            if(getNumForces() <= 6){
+                goToEasy = true;
+            }
+        }
+    }
+
+    private void setGoToHard(){
+        if(game.getLevel() == Level.INSANE){
+            if(getNumForces() <= 12 && getNumForces() > 6){
+                goToHard = true;
+            }
+        }
+    }
+
+    private void downSet(){
+        initCord[0]--;
+        initCord[1]++;
+        initCord[0]--;
+        rightToLeft = true;
+        down = true;
     }
 
 
