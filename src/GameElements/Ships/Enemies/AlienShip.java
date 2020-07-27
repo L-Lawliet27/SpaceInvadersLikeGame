@@ -15,9 +15,9 @@ public class AlienShip extends EnemyShip {
     protected static boolean down = false;
     protected static int counter;
     protected static boolean isFirst = true;
-    protected static int elemCounter = 0;
-    protected static boolean goToEasy = false;
-    protected static boolean goToHard = false;
+    protected static int elemCounter = getNumForces();
+//    protected static boolean goToEasy = false;
+//    protected static boolean goToHard = false;
 
     public AlienShip(Game game, int dimX, int dimY, int lives, int pointValue) {
         super(game, dimX, dimY, lives, pointValue);
@@ -89,7 +89,7 @@ public class AlienShip extends EnemyShip {
             if (getDir()) {
                 initCord[0]--;
 
-                if (!game.isOnBoard(initCord[0], initCord[1])) {
+                if (!game.isOnBoard(initCord[0] , initCord[1])) {
                     initCord[0]++;
                     initCord[1]++;
                     initCord[0]++;
@@ -107,35 +107,38 @@ public class AlienShip extends EnemyShip {
 
             } else {
                 initCord[0]++;
-                if (!game.isOnBoard(initCord[0], initCord[1])) {
-                    initCord[0]--;
-                    initCord[1]++;
-                    initCord[0]--;
+                if(!game.isOnBoard(initCord[0] + 4, initCord[1]) && isFirst){
+                    downSet();
+                }
+                 else
+
+                    //if(game.getLevel() == Level.EASY || goToEasy){
+
+                    if (!game.isOnBoard(initCord[0], initCord[1])) {
+                        initCord[0]--;
+                        initCord[1]++;
+                        initCord[0]--;
 //                    rightToLeft = true;
 //                    down = true;
-                } else if(game.getLevel() == Level.EASY || goToEasy){
-
-                    if(!game.isOnBoard(initCord[0] + (getNumForces() - 2), initCord[1]) && isFirst){
-                        downSet();
                     }
-                } else if (game.getLevel() == Level.HARD || goToHard){
-
-                    if(getNumForces() <= 8 && getNumForces() > 6){
-                        if(!game.isOnBoard(initCord[0] + (getNumForces() - 4), initCord[1]) && isFirst){
-                            downSet();
-                        }
-                    } else if(!game.isOnBoard(initCord[0] + (getNumForces() - 8), initCord[1]) && isFirst){
-                        downSet();
-                    }
-                } else if (game.getLevel() == Level.INSANE){
-
-                    if(!game.isOnBoard(initCord[0] + (getNumForces() - 12), initCord[1]) && isFirst){
-                        downSet();
-                    }
-                }
+//                } else if (game.getLevel() == Level.HARD || goToHard){
+//
+//                    if(getNumForces() <= 8 && getNumForces() > 6){
+//                        if(!game.isOnBoard(initCord[0] + (getNumForces() - 4), initCord[1]) && isFirst){
+//                            downSet();
+//                        }
+//                    } else if(!game.isOnBoard(initCord[0] + (getNumForces() - 8), initCord[1]) && isFirst){
+//                        downSet();
+//                    }
+//                } else if (game.getLevel() == Level.INSANE){
+//
+//                    if(!game.isOnBoard(initCord[0] + (getNumForces() - 12), initCord[1]) && isFirst){
+//                        downSet();
+//                    }
+//                }
 
             }
-            elemCounter++;
+            elemCounter--;
 
             setIsFirst();
             setLanded();
@@ -144,8 +147,8 @@ public class AlienShip extends EnemyShip {
 
 
     private void firstShipCheck(){
-        if(elemCounter == getNumForces()){
-            elemCounter = 0;
+        if(elemCounter == 0){
+            elemCounter = getNumForces();
             isFirst = true;
         }
     }
@@ -174,21 +177,21 @@ public class AlienShip extends EnemyShip {
         }
     }
 
-    private void setGoToEasy(){
-        if(game.getLevel() == Level.HARD || game.getLevel() == Level.INSANE){
-            if(getNumForces() <= 6){
-                goToEasy = true;
-            }
-        }
-    }
-
-    private void setGoToHard(){
-        if(game.getLevel() == Level.INSANE){
-            if(getNumForces() <= 12 && getNumForces() > 6){
-                goToHard = true;
-            }
-        }
-    }
+//    private void setGoToEasy(){
+//        if(game.getLevel() == Level.HARD || game.getLevel() == Level.INSANE){
+//            if(getNumForces() <= 6){
+//                goToEasy = true;
+//            }
+//        }
+//    }
+//
+//    private void setGoToHard(){
+//        if(game.getLevel() == Level.INSANE){
+//            if(getNumForces() <= 12 && getNumForces() > 6){
+//                goToHard = true;
+//            }
+//        }
+//    }
 
     private void downSet(){
         initCord[0]--;
