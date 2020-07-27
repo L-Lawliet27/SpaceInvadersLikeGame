@@ -150,6 +150,7 @@ public class Game implements IPlayerController{
             enableMissile();
             setCanShoot();
             addObject(new Missile(this, player.getCord('x'), player.getCord('y')));
+            update();
         } else throw new MissileInFlightException("Failed to shoot\n" +
                 "Cause of Exception:\n" +
                 "pr2.exceptions.MissileInFlightException: Cannot fire missile: missile already exists on board");
@@ -163,6 +164,7 @@ public class Game implements IPlayerController{
             setCanShoot();
             setSuperMissile();
             addObject(new SuperMissile(this, player.getCord('x'), player.getCord('y')));
+            update();
         }else throw new MissileInFlightException("Failed to shoot\n" +
                 "Cause of Exception:\n" +
                 "pr2.exceptions.MissileInFlightException: Cannot fire missile: missile already exists on board");
