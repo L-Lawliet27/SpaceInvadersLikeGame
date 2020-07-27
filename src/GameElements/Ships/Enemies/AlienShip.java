@@ -13,6 +13,8 @@ public class AlienShip extends EnemyShip {
     protected static boolean rightToLeft = true;
     protected static boolean down = false;
     protected static int counter;
+    protected static boolean isFirst = true;
+    protected static int elemCounter = 0;
 
     public AlienShip(Game game, int dimX, int dimY, int lives, int pointValue) {
         super(game, dimX, dimY, lives, pointValue);
@@ -76,6 +78,11 @@ public class AlienShip extends EnemyShip {
     public void move() {
         if(game.movingCycles() == 0) {
 
+            if(elemCounter == getNumForces()){
+                elemCounter = 0;
+                isFirst = true;
+            }
+
             if(down){
                 initCord[1]++;
                 counter++;
@@ -87,6 +94,7 @@ public class AlienShip extends EnemyShip {
 
             if (getDir()) {
                 initCord[0]--;
+
                 if (!game.isOnBoard(initCord[0], initCord[1])) {
                     initCord[0]++;
                     initCord[1]++;
@@ -95,9 +103,23 @@ public class AlienShip extends EnemyShip {
                     down = true;
                 }
 
+                //                } else if(!game.isOnBoard(initCord[0] - 1, initCord[1] - 1)){
+//                    initCord[0]++;
+//                    initCord[1]++;
+//                    initCord[0]++;
+//                    rightToLeft = false;
+//                    down = true;
+//                }
+
             } else {
                 initCord[0]++;
                 if (!game.isOnBoard(initCord[0], initCord[1])) {
+                    initCord[0]--;
+                    initCord[1]++;
+                    initCord[0]--;
+//                    rightToLeft = true;
+//                    down = true;
+                } else if(!game.isOnBoard(initCord[0] + 4, initCord[1]) && isFirst){
                     initCord[0]--;
                     initCord[1]++;
                     initCord[0]--;
@@ -105,6 +127,11 @@ public class AlienShip extends EnemyShip {
                     down = true;
                 }
 
+            }
+            elemCounter++;
+
+            if(isFirst){
+                isFirst = false;
             }
 
 
