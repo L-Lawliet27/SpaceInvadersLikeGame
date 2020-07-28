@@ -22,7 +22,7 @@ public class SaveCommand extends Command{
     @Override
     public boolean execute(Game game) throws CommandExecuteException, SuperMissileException, NoShockwaveException, OffWorldException, MissileInFlightException, IOException {
 
-        System.out.println("Type Desired Name of Saved Match: ");
+//        System.out.println("Type Desired Name of Saved Match: ");
         String name = nameOfFile.nextLine();
         name = name + ".dat";
         System.out.println("\n");

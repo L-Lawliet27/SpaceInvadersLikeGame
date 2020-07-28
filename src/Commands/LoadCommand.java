@@ -21,7 +21,7 @@ public class LoadCommand extends Command{
     @Override
     public boolean execute(Game game) throws FileContentsException, IOException {
         lineRead = "";
-        System.out.println("Type Desired Name of Loaded Match: ");
+//        System.out.println("Type Desired Name of Loaded Match: ");
         String name = nameOfFile.nextLine();
         name = name + ".dat";
 
