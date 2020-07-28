@@ -38,13 +38,15 @@ public class CommandGenerator
     } //parse
 
 
-    public static void commandHelp()
+    public static String commandHelp()
     {
+        String hp = "";
         for (Command i : availableCommands)
         {
-            System.out.println(i.helpText());
+            hp = hp + i.helpText() + "\n";
         }
 
+        return hp;
     }
 
 

@@ -13,7 +13,7 @@ public class HelpCommand extends Command {
 
 	@Override
 	public boolean execute(Game game) {
-		CommandGenerator.commandHelp();
+		System.out.println(CommandGenerator.commandHelp());
 		return false;
 	}
 
