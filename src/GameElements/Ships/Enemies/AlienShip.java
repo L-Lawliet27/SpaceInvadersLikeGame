@@ -107,7 +107,7 @@ public class AlienShip extends EnemyShip {
 
             } else {
                 initCord[0]++;
-                if(!game.isOnBoard(initCord[0] + 4, initCord[1]) && isFirst){
+                if(!game.isOnBoard(initCord[0] + 3, initCord[1]) && isFirst){
                     downSet();
                 }
                  else
@@ -118,7 +118,7 @@ public class AlienShip extends EnemyShip {
                         initCord[0]--;
                         initCord[1]++;
                         initCord[0]--;
-//                    rightToLeft = true;
+                    rightToLeft = true;
 //                    down = true;
                     }
 //                } else if (game.getLevel() == Level.HARD || goToHard){
@@ -171,7 +171,7 @@ public class AlienShip extends EnemyShip {
     }
 
     private void setLanded(){
-        if (initCord[1] == Game.DIM_Y - 1) {
+        if (initCord[1] == Game.DIM_Y - 2) {
             landed = true;
             game.getWinnerMessage();
         }

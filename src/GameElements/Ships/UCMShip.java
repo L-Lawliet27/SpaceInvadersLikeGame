@@ -11,7 +11,7 @@ public class UCMShip extends Ship{
     private int mov;
 
     public UCMShip(Game game, int dimX, int dimY) {
-        super(game, dimX, dimY, 1);
+        super(game, dimX, dimY, 3);
         enShock = false;
         enMiss = false;
         takeShot = true;

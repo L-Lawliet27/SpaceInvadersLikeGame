@@ -23,8 +23,8 @@ import java.util.Random;
 
 public class Game implements IPlayerController{
 
-    public final static int DIM_X = 9;
-    public final static int DIM_Y = 8;
+    public final static int DIM_X = 8;
+    public final static int DIM_Y = 9;
 
     private Board board;
     private UCMShip player;
@@ -50,7 +50,7 @@ public class Game implements IPlayerController{
     public void initGame () {
         currentCycle = 0;
         board = initializer.initialize(this, level );
-        player = new UCMShip(this, DIM_X / 2, DIM_Y - 1 );
+        player = new UCMShip(this, DIM_X / 2, DIM_Y -2);
         board.add(player);
     }
 
@@ -96,7 +96,7 @@ public class Game implements IPlayerController{
 
     public boolean isOnBoard(int x, int y) {
 
-        return x >= 0 && x < DIM_X && y >= 0 && y < DIM_Y /* range condition on the coordinates */;
+        return x >= 0 && x <= DIM_X && y >= 0 && y < DIM_Y /* range condition on the coordinates */;
     }
 
 
