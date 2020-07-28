@@ -11,7 +11,7 @@ public class UCMShip extends Ship{
     private int mov;
 
     public UCMShip(Game game, int dimX, int dimY) {
-        super(game, dimX, dimY, 3);
+        super(game, dimX, dimY, 1);
         enShock = false;
         enMiss = false;
         takeShot = true;
@@ -114,7 +114,9 @@ public class UCMShip extends Ship{
 
     @Override
     public void move() {
-        initCord[0] += mov;
+        if(isAlive()) {
+            initCord[0] += mov;
+        }
     }
 
     @Override
@@ -128,7 +130,8 @@ public class UCMShip extends Ship{
 
         if(isAlive()) {
             return "/-^-\\";
-        } else return "_+.+_";
+        }
+        return "_+.+_";
     }
 
 

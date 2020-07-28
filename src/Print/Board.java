@@ -26,8 +26,11 @@ public class Board {
         for (int i = 0; i < getCurrentElements(); i++) {
             checkAttacks(elements[i]);
             if(elements[i].toString() != null){
-                if(!elements[i].toString().equals("/-^-\\")){
-                    elements[i].move();
+                if((!elements[i].toString().equals("/-^-\\"))){
+                    if((!elements[i].toString().equals("_+.+_"))){
+                        elements[i].move();
+                    }
+//                    elements[i].move();
                 }
             } else continue;
 //            assert elements[i] != null;
@@ -47,11 +50,14 @@ public class Board {
         }
     }
 
-    public String toString(int x, int y) {
-        // TODO implement
+    public String toString(int x, int y) throws NullPointerException{
+
+        String ts = "";
         if(getObjectAt(x,y) != null) {
-            return getObjectAt(x,y).toString();
-        } else return "";
+                ts = getObjectAt(x,y).toString();
+        }
+
+        return ts;
 
     }
 
@@ -129,7 +135,9 @@ public class Board {
         // TODO implement
         for (int i = 0; i < getCurrentElements(); i++) {
             if(!elements[i].isAlive() || elements[i].isOut() || elements[i].getShield() <=0){
-                remove(/*elements[i],*/ i);
+                if(!elements[i].toString().equals("/-^-\\") || !elements[i].toString().equals("_+.+_")){
+                     remove(/*elements[i],*/ i);
+                }
             }
         }
     }

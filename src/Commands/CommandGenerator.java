@@ -23,9 +23,14 @@ public class CommandGenerator
 
     public static Command parse (String[] words)
     {
+
         for (Command cmd : availableCommands)
         {
-            if(cmd.matchCommandName(words[0])) return cmd.parse(words);
+            if(cmd.parse(words) != null){
+                return cmd.parse(words);
+            }
+
+//            if(cmd.matchCommandName(words[0])) return cmd.parse(words);
         }
 
         return null;
