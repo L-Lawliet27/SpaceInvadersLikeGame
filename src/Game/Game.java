@@ -219,6 +219,7 @@ public class Game implements IPlayerController{
                 enableShockWave();
                 addObject(new ShockWave(this, player.getCord('x'), player.getCord('y')));
                 update();
+                return true;
             }
 
 //        if(player.getEnShock()){
@@ -227,7 +228,8 @@ public class Game implements IPlayerController{
 //            update();
 //        } else throw new NoShockwaveException("Cannot release shockwave: no shockwave available" + "%n%n");
 
-        return true;
+//        return true;
+        return false;
     }
 
     @Override

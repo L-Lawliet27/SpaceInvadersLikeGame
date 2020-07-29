@@ -1,6 +1,7 @@
 package Commands;
 
 
+import Exceptions.CommandExecuteException;
 import Exceptions.NoShockwaveException;
 import Game.Game;
 
@@ -13,9 +14,15 @@ public class ShockwaveCommand extends Command {
 
 
 	@Override
-	public boolean execute(Game game) throws NoShockwaveException {
+	public boolean execute(Game game) {
 
-		return game.shockWave();
+		try {
+			if (!game.shockWave()) throw new CommandExecuteException("Failed to Shoot");
+		}catch (CommandExecuteException e){
+			System.err.println(e.getMessage());
+		}
+
+		return true;
 	}
 
 	@Override
