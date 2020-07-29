@@ -22,14 +22,17 @@ public class BuyCommand extends Command{
 //	}
 
 	@Override
-	public boolean execute(Game game) throws SuperMissileException {
-
-		if(game.currentPoints() >= 20){
-			game.receivePoints(-20);
-			game.setSuperMissile();
-			System.out.println("Super Missile Purchased!! \n");
-			game.update();
-		} else throw new SuperMissileException("Not Enough Points to Purchase SuperMissile" + "%n%n");
+	public boolean execute(Game game){
+		try {
+			if (game.currentPoints() >= 20) {
+				game.receivePoints(-20);
+				game.setSuperMissile();
+				System.out.println("Super Missile Purchased!! \n");
+				game.update();
+			} else throw new SuperMissileException("Not Enough Points to Purchase SuperMissile" + "%n%n");
+		} catch (SuperMissileException e){
+			System.err.println(e.getMessage());
+		}
 		return true;
 	}
 

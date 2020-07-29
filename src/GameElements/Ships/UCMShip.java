@@ -1,5 +1,8 @@
 package GameElements.Ships;
 
+import Exceptions.MissileInFlightException;
+import Exceptions.NoShockwaveException;
+import Exceptions.OffWorldException;
 import Game.Game;
 import GameElements.GameElement;
 import Utils.FileContentsVerifier;
@@ -95,6 +98,27 @@ public class UCMShip extends Ship{
         return enShock;
     }
 
+    public boolean shock() throws NoShockwaveException {
+        if(!getEnShock()) throw new NoShockwaveException("Cannot release shockwave: no shockwave available");
+        else return true;
+    }
+
+
+    public boolean missile() throws MissileInFlightException {
+        if(getEnMiss() && !canShoot()) throw new MissileInFlightException("Failed to shoot\n" +
+                "Cause of Exception:\n" +
+                "pr2.exceptions.MissileInFlightException: Cannot fire missile: missile already exists on board");
+        else return true;
+    }
+
+    public boolean superMissile() throws MissileInFlightException {
+        if(getEnMiss() && !canShoot() && getSM())
+            throw new MissileInFlightException("Failed to shoot\n" +
+                "Cause of Exception:\n" +
+                "pr2.exceptions.MissileInFlightException: Cannot fire missile: missile already exists on board");
+        else return true;
+    }
+
     public boolean getEnMiss(){
         return enMiss;
     }
@@ -104,6 +128,17 @@ public class UCMShip extends Ship{
     public void move(int numCells) {
         mov = numCells;
         move();
+    }
+
+    public boolean onBoard(int numCells) throws OffWorldException {
+
+        if(!game.isOnBoard(getCord('x') + numCells, getCord('y'))){
+            throw new OffWorldException("Failed to move\n" +
+                    "Cause of Exception:\n" +
+                    "pr2.exceptions.OffWorldException: Cannot perform move: ship too near border");
+        } else return true;
+
+
     }
 
     @Override

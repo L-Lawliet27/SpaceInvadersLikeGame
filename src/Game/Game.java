@@ -135,54 +135,97 @@ public class Game implements IPlayerController{
 
 
     @Override
-    public boolean move(int numCells) throws OffWorldException {
-        if(isOnBoard(player.getCord('x')+numCells, player.getCord('y'))) {
+    public boolean move(int numCells){
+        boolean mv = false;
+        try {
+               mv = player.onBoard(numCells);
+
+        } catch (OffWorldException e){
+            System.err.println(e.getMessage());
+        }
+        if(mv){
             player.move(numCells);
             update();
-        } else throw new OffWorldException("Failed to move\n" +
-                "Cause of Exception:\n" +
-                "pr2.exceptions.OffWorldException: Cannot perform move: ship too near border");
+        }
+
         return false;
     }
 
     @Override
-    public boolean shootMissile() throws MissileInFlightException {
-        if(!player.getEnMiss() && player.canShoot()){
-            enableMissile();
-            setCanShoot();
-            addObject(new Missile(this, player.getCord('x'), player.getCord('y')));
-            update();
-        } else throw new MissileInFlightException("Failed to shoot\n" +
-                "Cause of Exception:\n" +
-                "pr2.exceptions.MissileInFlightException: Cannot fire missile: missile already exists on board");
+    public boolean shootMissile(){
+            boolean shoot = false;
+            try{
+                shoot = player.missile();
+            } catch (MissileInFlightException e){
+                System.err.println(e.getMessage());
+            }
+
+            if(shoot) {
+                enableMissile();
+                setCanShoot();
+                addObject(new Missile(this, player.getCord('x'), player.getCord('y')));
+                update();
+            }
+
+//        if(!player.getEnMiss() && player.canShoot()){
+//            enableMissile();
+//            setCanShoot();
+//            addObject(new Missile(this, player.getCord('x'), player.getCord('y')));
+//            update();
+//        } else throw new MissileInFlightException("Failed to shoot\n" +
+//                "Cause of Exception:\n" +
+//                "pr2.exceptions.MissileInFlightException: Cannot fire missile: missile already exists on board");
         return true;
     }
 
-    public boolean shootSuperMissile() throws MissileInFlightException {
+    public boolean shootSuperMissile(){
+            boolean shoot = false;
+            try{
+                shoot = player.superMissile();;
+            } catch (MissileInFlightException e){
+                System.err.println(e.getMessage());
+            }
+            if(shoot) {
+                enableMissile();
+                setCanShoot();
+                setSuperMissile();
+                addObject(new SuperMissile(this, player.getCord('x'), player.getCord('y')));
+                update();
+            }
 
-        if(!player.getEnMiss() && player.canShoot() && statSuperMissile()){
-             enableMissile();
-            setCanShoot();
-            setSuperMissile();
-            addObject(new SuperMissile(this, player.getCord('x'), player.getCord('y')));
-            update();
-        }else throw new MissileInFlightException("Failed to shoot\n" +
-                "Cause of Exception:\n" +
-                "pr2.exceptions.MissileInFlightException: Cannot fire missile: missile already exists on board");
+
+//        if(!player.getEnMiss() && player.canShoot() && statSuperMissile()){
+//             enableMissile();
+//            setCanShoot();
+//            setSuperMissile();
+//            addObject(new SuperMissile(this, player.getCord('x'), player.getCord('y')));
+//            update();
+//        }else throw new MissileInFlightException("Failed to shoot\n" +
+//                "Cause of Exception:\n" +
+//                "pr2.exceptions.MissileInFlightException: Cannot fire missile: missile already exists on board");
         return true;
 
     }
 
     @Override
-    public boolean shockWave() throws NoShockwaveException {
+    public boolean shockWave() {
+        boolean wave = false;
+            try {
+               wave = player.shock();
+            } catch (NoShockwaveException e){
+                System.err.println(e.getMessage());
+            }
+            if(wave) {
+                enableShockWave();
+                addObject(new ShockWave(this, player.getCord('x'), player.getCord('y')));
+                update();
+            }
 
-        if(player.getEnShock()){
-            enableShockWave();
-            addObject(new ShockWave(this, player.getCord('x'), player.getCord('y')));
-            update();
-        } else throw new NoShockwaveException("Failed to shoot\n" +
-                "Cause of Exception:\n" +
-                "pr2.exceptions.NoShockwaveException: Cannot release shockwave: no shockwave available" + "%n%n");
+//        if(player.getEnShock()){
+//            enableShockWave();
+//            addObject(new ShockWave(this, player.getCord('x'), player.getCord('y')));
+//            update();
+//        } else throw new NoShockwaveException("Cannot release shockwave: no shockwave available" + "%n%n");
 
         return true;
     }
@@ -263,17 +306,25 @@ public class Game implements IPlayerController{
         String line = inStream.readLine().trim();
         Board ldBoard = new Board(Game.DIM_X,Game.DIM_Y);
 
-        if(verifier.verifyCycleString(line)){
-            String[] cycle = line.split(";");
-            currentCycle = Integer.parseInt(cycle[1]);
-        } else throw new FileContentsException("File Error: Foreign Cycle");
+       try {
+           if (verifier.verifyCycleString(line)) {
+               String[] cycle = line.split(";");
+               currentCycle = Integer.parseInt(cycle[1]);
+           } else throw new FileContentsException("File Error: Foreign Cycle");
+       } catch (FileContentsException e){
+           System.err.println(e.getMessage());
+       }
 
         line = inStream.readLine().trim();
 
-        if(verifier.verifyLevelString(line)){
-            String[] lvl = line.split(";");
-            level = Level.parse(lvl[1]);
-        } else throw new FileContentsException("File Error: Foreign Level");
+       try {
+           if (verifier.verifyLevelString(line)) {
+               String[] lvl = line.split(";");
+               level = Level.parse(lvl[1]);
+           } else throw new FileContentsException("File Error: Foreign Level");
+       } catch (FileContentsException e){
+           System.err.println(e.getMessage());
+       }
 
         line = inStream.readLine().trim();
 
@@ -281,29 +332,35 @@ public class Game implements IPlayerController{
             GameElement gameElement = GameElementGenerator.parse(line, this, verifier);
             String[] type = line.split(";");
 
-
-            if(type[0].equals("P")){
-                player = (UCMShip) gameElement;
-                ldBoard.add(player);
-                isP = true;
-            } else if (gameElement == null)
-                throw new FileContentsException("invalid file, unknown line prefix");
-
-            if(!isP) {
-                ldBoard.add(gameElement);
+            try {
+                if (type[0].equals("P")) {
+                    player = (UCMShip) gameElement;
+                    ldBoard.add(player);
+                    isP = true;
+                } else if (gameElement == null)
+                    throw new FileContentsException("invalid file, unknown line prefix");
+            } catch (FileContentsException e){
+                System.err.println(e.getMessage());
             }
+
+            if(!isP) ldBoard.add(gameElement);
             line = inStream.readLine().trim();
         }
 
         inStream.close();
 
         if (verifier.isMissileOnLoadedBoard()){
-            if(FileContentsVerifier.verifyMissiles(player.getEnMiss())){
-                player.changeMissileStat();
-            }
+            try {
+                if (FileContentsVerifier.verifyMissiles(player.getEnMiss())) {
+                    player.changeMissileStat();
+                } else throw new FileContentsException("Error with Missile status");
 
-            if(FileContentsVerifier.verifyMissiles(player.canShoot())){
-                player.setTakeShot();
+                if (FileContentsVerifier.verifyMissiles(player.canShoot())) {
+                    player.setTakeShot();
+                } else throw new FileContentsException("Error with Shooting status");
+
+            } catch (FileContentsException e){
+                System.err.println(e.getMessage());
             }
         }
 
