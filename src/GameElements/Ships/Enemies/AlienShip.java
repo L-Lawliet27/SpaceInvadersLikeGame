@@ -54,14 +54,19 @@ public class AlienShip extends EnemyShip {
         line = splitOnRef[0].split(";");
         coord = line[1].split(",");
 
-        if(verifier.verifyAlienShipString(inLine, game, Integer.parseInt(line[2]))){
-            switch (line[0].toUpperCase()){
-                case "C": return new CarrierShip(game, Integer.parseInt(coord[0]), Integer.parseInt(coord[1]),
-                        Integer.parseInt(line[2]), FileContentsVerifier.verifyBool(line[3]));
-                case "D": return new Destroyer(game, Integer.parseInt(coord[0]), Integer.parseInt(coord[1]),
-                        Integer.parseInt(line[2]), FileContentsVerifier.verifyBool(line[3]));
-                case "E": return new ExplosiveShip(game, Integer.parseInt(coord[0]), Integer.parseInt(coord[1]),
-                        Integer.parseInt(line[2]), FileContentsVerifier.verifyBool(line[3]));
+        if(line[0].equals("C") || line[0].equals("D") || line[0].equals("E")) {
+            if (verifier.verifyAlienShipString(inLine, game, Integer.parseInt(line[2]))) {
+                switch (line[0].toUpperCase()) {
+                    case "C":
+                        return new CarrierShip(game, Integer.parseInt(coord[0]), Integer.parseInt(coord[1]),
+                                Integer.parseInt(line[2]), FileContentsVerifier.verifyBool(line[3]));
+                    case "D":
+                        return new Destroyer(game, Integer.parseInt(coord[0]), Integer.parseInt(coord[1]),
+                                Integer.parseInt(line[2]), FileContentsVerifier.verifyBool(line[3]));
+                    case "E":
+                        return new ExplosiveShip(game, Integer.parseInt(coord[0]), Integer.parseInt(coord[1]),
+                                Integer.parseInt(line[2]), FileContentsVerifier.verifyBool(line[3]));
+                }
             }
         }
         return null;

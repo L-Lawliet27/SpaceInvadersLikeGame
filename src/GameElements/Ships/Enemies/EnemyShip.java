@@ -60,4 +60,9 @@ public class EnemyShip extends Ship {
         return null;
     }
 
+    @Override
+    public boolean isOwner(int ref) {
+        return false;
+    }
+
 }

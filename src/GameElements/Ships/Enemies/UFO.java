@@ -39,9 +39,11 @@ public class UFO extends EnemyShip implements IExecuteRandomActions {
         line = inLine.split(";");
         coord = line[1].split(",");
 
-        if(verifier.verifyUfoString(inLine,game,Integer.parseInt(line[2]))){
-            return new UFO(game, Integer.parseInt(coord[0]), Integer.parseInt(coord[1]),
-                    Integer.parseInt(line[2]));
+        if(line[0].equals("U")) {
+            if (verifier.verifyUfoString(inLine, game, Integer.parseInt(line[2]))) {
+                return new UFO(game, Integer.parseInt(coord[0]), Integer.parseInt(coord[1]),
+                        Integer.parseInt(line[2]));
+            }
         }
 
         return null;

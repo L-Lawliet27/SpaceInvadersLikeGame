@@ -99,8 +99,6 @@ public abstract class GameElement implements IAttack {
         return prevLabel;
     }
 
-    public boolean isOwner(int ref) {
-        return label == ref;
-    }
+    public abstract boolean isOwner(int ref);
 
 }

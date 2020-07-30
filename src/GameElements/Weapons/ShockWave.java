@@ -44,4 +44,9 @@ public class ShockWave extends Weapon{
     public String stringify() {
         return null;
     }
+
+    @Override
+    public boolean isOwner(int ref) {
+        return false;
+    }
 }

@@ -14,6 +14,8 @@ public class FileContentsVerifier{
         foundInFileString += linePrefix;
     }
 
+
+//    VERIFY CYCLE {
     // Don’t catch NumberFormatException.
     public boolean verifyCycleString(String cycleString) {
         String[] words = cycleString.split (separator1);
@@ -23,6 +25,11 @@ public class FileContentsVerifier{
             return false;
         return true;
     }
+    //  }
+
+
+
+    //    VERIFY LEVEL {
     public boolean verifyLevelString(String levelString) {
         String[] words = levelString.split(separator1);
         appendToFoundInFileString(words[0]);
@@ -31,6 +38,10 @@ public class FileContentsVerifier{
             return false;
         return true;
     }
+    //  }
+
+
+    //    VERIFY UFO {
     // Don’t catch NumberFormatException.
     public boolean verifyUfoString(String lineFromFile, Game game, int armour) {
         String[] words = lineFromFile.split(separator1);
@@ -42,11 +53,15 @@ public class FileContentsVerifier{
             return false;
         return true;
     }
+    //  }
+
+
+    //    VERIFY PLAYER {
     // Don’t catch NumberFormatException.
     public boolean verifyPlayerString(String lineFromFile, Game game, int armour) {
         String[] words = lineFromFile.split(separator1);
         appendToFoundInFileString(words[0]);
-        if (words.length != 6) return false;
+        if (words.length != 6 && !words[0].equals("P")) return false;
         String[] coords = words[1].split (separator2);
         if ( ! verifyCoords(Integer. parseInt(coords[0]) , Integer. parseInt(coords[1]) , game)
                 || ! verifyShield(Integer.parseInt(words[2]), armour)
@@ -55,6 +70,10 @@ public class FileContentsVerifier{
             return true;
         return false;
     }
+    //  }
+
+
+    //    VERIFY ALIENSHIPS {
     // Don’t catch NumberFormatException.
     public boolean verifyAlienShipString(String lineFromFile, Game game, int armour) {
         String[] words = lineFromFile.split(separator1);
@@ -70,16 +89,35 @@ public class FileContentsVerifier{
         }
         return true;
     }
+    //  }
+
+
+    //    VERIFY WEAPON {
     // Don’t catch NumberFormatException.
     public boolean verifyWeaponString(String lineFromFile, Game game) {
         String[] words = lineFromFile.split(separator1);
         if (words.length != 2) return false;
         appendToFoundInFileString(words[0]);
-        String[] coords = words[1].split (separator2);
-        if ( ! verifyCoords(Integer. parseInt(coords[0]) , Integer. parseInt(coords[1]) , game) )
-            return false;
+
+
+        if(words[0].equals("M")){
+            String[] coords = words[1].split (separator2);
+            if ( ! verifyCoords(Integer. parseInt(coords[0]) , Integer. parseInt(coords[1]) , game) )
+                return false;
+        }
+        else {
+            String[] origin = words[1].split(labelRefSeparator);
+            String[] coords = origin[0].split(separator2);
+            if (!verifyCoords(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), game) && !verifyRefString(words[1]) ) {
+                return false;
+            }
+        }
         return true;
     }
+    //  }
+
+
+
     public boolean verifyRefString(String lineFromFile) {
         String[] words = lineFromFile.split(labelRefSeparator);
         if (words.length != 2 || ! verifyLabel(words[1])) return false;
@@ -141,7 +179,7 @@ public class FileContentsVerifier{
     // text explaining allowed concatenated prefixes
     public String toString() {
     // TODO
-        prefixes[0]= "Ufo: U;x;y;shield\n";
+        prefixes[0]= "Ufo: U;x,y;shield\n";
         prefixes[1]= "Carrier ship: C;x,y;shield;cyclesNextAlienMove;dir\n";
         prefixes[2]= "Destroyer: D;x,y;shield;cyclesNextAlienMove;dir\n";
         prefixes[3]= "Explosive ship: E;x,y;shield;cyclesNextAlienMove;dir\n";

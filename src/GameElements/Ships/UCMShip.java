@@ -62,13 +62,20 @@ public class UCMShip extends Ship{
         line = inLine.split(";");
         coord = line[1].split(",");
 
-        if(verifier.verifyPlayerString(inLine, game, Integer.parseInt(line[2]))){
-            return new UCMShip(game, Integer.parseInt(coord[0]), Integer.parseInt(coord[1]),
-                    Integer.parseInt(line[2]),Integer.parseInt(line[3]),
-                    FileContentsVerifier.verifyBool(line[4]),
-                    FileContentsVerifier.verifyBool(line[5]));
+        if(line[0].equals("P")) {
+            if (verifier.verifyPlayerString(inLine, game, Integer.parseInt(line[2]))) {
+                return new UCMShip(game, Integer.parseInt(coord[0]), Integer.parseInt(coord[1]),
+                        Integer.parseInt(line[2]), Integer.parseInt(line[3]),
+                        FileContentsVerifier.verifyBool(line[4]),
+                        FileContentsVerifier.verifyBool(line[5]));
+            }
         }
         return null;
+    }
+
+    @Override
+    public boolean isOwner(int ref) {
+        return false;
     }
 
 

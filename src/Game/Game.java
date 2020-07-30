@@ -301,10 +301,9 @@ public class Game implements IPlayerController{
     }
 
 
-    public void load(BufferedReader inStream) throws FileContentsException, IOException {
+    public void load(BufferedReader inStream) throws IOException {
         loading = false;
         verifier = new FileContentsVerifier();
-        boolean isP= false;
         String line = inStream.readLine().trim();
         Board ldBoard = new Board(Game.DIM_X,Game.DIM_Y);
 
@@ -331,6 +330,7 @@ public class Game implements IPlayerController{
         line = inStream.readLine().trim();
 
         while( line != null && !line.isEmpty() ) {
+            boolean isP = false;
             GameElement gameElement = GameElementGenerator.parse(line, this, verifier);
             String[] type = line.split(";");
 
@@ -345,8 +345,15 @@ public class Game implements IPlayerController{
                 System.err.println(e.getMessage());
             }
 
-            if(!isP) ldBoard.add(gameElement);
-            line = inStream.readLine().trim();
+            if(!isP){
+                ldBoard.add(gameElement);
+            }
+            try {
+                line = inStream.readLine().trim();
+            }catch (Exception e){
+                line = null;
+            }
+
         }
 
         inStream.close();

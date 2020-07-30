@@ -77,5 +77,10 @@ public class Missile extends Weapon{
         return serial[0] + serial[1];
     }
 
+    @Override
+    public boolean isOwner(int ref) {
+        return false;
+    }
+
 
 }

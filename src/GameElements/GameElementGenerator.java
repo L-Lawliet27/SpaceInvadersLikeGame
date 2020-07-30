@@ -20,8 +20,7 @@ public class GameElementGenerator {
             new Missile(),
             new SuperMissile()
     };
-    public static GameElement parse(String stringFromFile, Game game, FileContentsVerifier verifier)
-            throws FileContentsException {
+    public static GameElement parse(String stringFromFile, Game game, FileContentsVerifier verifier) {
         GameElement gameElement = null;
         for (GameElement ge: availableGameElements) {
             gameElement = ge.parse(stringFromFile, game, verifier);

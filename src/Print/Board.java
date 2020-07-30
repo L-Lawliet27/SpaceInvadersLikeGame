@@ -1,6 +1,8 @@
 package Print;
 
 import GameElements.GameElement;
+import GameElements.Ships.Enemies.AlienShip;
+import GameElements.Ships.Enemies.Destroyer;
 import GameElements.Ships.UCMShip;
 import GameElements.Weapons.ShockWave;
 

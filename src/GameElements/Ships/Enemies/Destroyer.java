@@ -70,7 +70,7 @@ public class Destroyer extends AlienShip implements IExecuteRandomActions {
 
 
     public boolean isOwner(int ref) {
-        boolean itsMe = super.isOwner(ref);
+        boolean itsMe = label==ref;
         if (itsMe) dropBomb = false;
         return itsMe;
     }

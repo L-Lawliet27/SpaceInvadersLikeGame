@@ -74,6 +74,11 @@ public class Bomb extends Weapon{
         return serial[0] + serial[1] + (origin.isAlive() ? generateSerialRef() : "");
     }
 
+    @Override
+    public boolean isOwner(int ref) {
+        return false;
+    }
+
 
     @Override
     public String toString() {
