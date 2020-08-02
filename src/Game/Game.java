@@ -255,7 +255,6 @@ public class Game implements IPlayerController{
         return player.getPoints();
     }
 
-
     public void setSuperMissile(){
         player.changeSuperMissileStat();
     }
@@ -360,7 +359,7 @@ public class Game implements IPlayerController{
 
         if (verifier.isMissileOnLoadedBoard()){
             try {
-                if (FileContentsVerifier.verifyMissiles(player.getEnMiss())) {
+                if (!FileContentsVerifier.verifyMissiles(player.getEnMiss())) {
                     player.changeMissileStat();
                 } else throw new FileContentsException("Error with Missile status");
 
@@ -374,6 +373,8 @@ public class Game implements IPlayerController{
         }
 
         board = ldBoard;
+        board.computerAction();
+        board.update();
 
     }
 

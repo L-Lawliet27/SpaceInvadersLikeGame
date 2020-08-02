@@ -78,9 +78,21 @@ public class FileContentsVerifier{
     public boolean verifyAlienShipString(String lineFromFile, Game game, int armour) {
         String[] words = lineFromFile.split(separator1);
         appendToFoundInFileString(words[0]);
-        if (words.length != 5) return false;
+        if (words.length != 5 && words.length != 6 && !words[0].equals("C")
+        && !words[0].equals("D") && !words[0].equals("E")) return false;
         String[] coords = words[1].split (separator2);
-        if ( ! verifyCoords(Integer. parseInt(coords[0]) , Integer. parseInt(coords[1]) , game)
+        if(words[0].equals("D")){
+            String[] splitOnRef = lineFromFile.split(labelRefSeparator);
+            if (!verifyCoords(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), game)
+                    || !verifyShield(Integer.parseInt(words[2]), armour)
+                    || !verifyCycleToNextAlienMove(Integer.parseInt(words[3]), game.getLevel())
+                    || !verifyDir(words[4])
+                    || !verifyLabel(splitOnRef[1])) {
+
+                return false;
+            }
+        }
+        else if ( ! verifyCoords(Integer. parseInt(coords[0]) , Integer. parseInt(coords[1]) , game)
                 || ! verifyShield(Integer.parseInt(words[2]), armour)
                 || ! verifyCycleToNextAlienMove(Integer.parseInt(words[3]), game.getLevel())
 // supposes that Direction is an enum with a parse method (similar to that of the Level enum)

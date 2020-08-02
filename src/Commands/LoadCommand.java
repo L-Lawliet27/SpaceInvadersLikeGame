@@ -34,6 +34,7 @@ public class LoadCommand extends Command{
 
         } catch (IOException e){
             System.err.println("Complications in Loading Game" + "%n%n");
+            System.err.println(e.getMessage());
         }
 
         System.out.println(lineRead);

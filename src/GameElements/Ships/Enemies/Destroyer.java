@@ -17,13 +17,14 @@ public class Destroyer extends AlienShip implements IExecuteRandomActions {
     public Destroyer() {
     }
 
-    public Destroyer(Game game, int dimX, int dimY, int shield, boolean dir) {
+    public Destroyer(Game game, int dimX, int dimY, int shield, boolean dir, int label) {
         super(game, dimX, dimY, shield, 5);
         rightToLeft = dir;
+        this.label = label;
     }
 
     private void initialiseLabelling () {
-        currentSerialNumber = 1;
+        currentSerialNumber=1;
     }
 
     private String generateStringifyLabel() {
@@ -70,7 +71,7 @@ public class Destroyer extends AlienShip implements IExecuteRandomActions {
 
 
     public boolean isOwner(int ref) {
-        boolean itsMe = label==ref;
+        boolean itsMe = this.label==ref;
         if (itsMe) dropBomb = false;
         return itsMe;
     }

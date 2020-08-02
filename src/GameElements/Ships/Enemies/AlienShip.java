@@ -62,7 +62,8 @@ public class AlienShip extends EnemyShip {
                                 Integer.parseInt(line[2]), FileContentsVerifier.verifyBool(line[3]));
                     case "D":
                         return new Destroyer(game, Integer.parseInt(coord[0]), Integer.parseInt(coord[1]),
-                                Integer.parseInt(line[2]), FileContentsVerifier.verifyBool(line[3]));
+                                Integer.parseInt(line[2]), FileContentsVerifier.verifyBool(line[3]),
+                                Integer.parseInt(splitOnRef[1]));
                     case "E":
                         return new ExplosiveShip(game, Integer.parseInt(coord[0]), Integer.parseInt(coord[1]),
                                 Integer.parseInt(line[2]), FileContentsVerifier.verifyBool(line[3]));
